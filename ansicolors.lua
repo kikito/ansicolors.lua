@@ -28,6 +28,7 @@ local function isWindows()
 end
 
 local supported = not isWindows()
+if isWindows() then supported = os.getenv("ANSICON") end
 
 local keys = {
   -- reset

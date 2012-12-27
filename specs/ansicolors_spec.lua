@@ -3,7 +3,7 @@ local ansicolors = require 'ansicolors'
 local c27 = string.char(27)
 
 describe('ansicolors', function()
-  
+
   it('should add resets if no options given', function()
     assert_equal(ansicolors('foo'), c27 .. '[0m' .. 'foo' .. c27 .. '[0m' )
   end)
@@ -11,7 +11,7 @@ describe('ansicolors', function()
   it('should throw an error on invalid options', function()
     assert_error(function() ansicolors('%{blah}foo') end)
   end)
-  
+
   it('should add red color to text', function()
     assert_equal(ansicolors('%{red}foo'), c27 .. '[0m' .. c27 .. '[31mfoo' .. c27 .. '[0m')
   end)
@@ -36,6 +36,26 @@ describe('ansicolors', function()
       io.popen = prevIoPopen
     end)
 
+  end)
+
+  describe('under Windows', function()
+
+    describe('without ANSICON', function()
+      it('should return a plain text string', function()
+        package.config = "\\"
+        local colors = dofile 'ansicolors.lua'
+        assert_equal(colors('%{red}foo'), 'foo')
+      end)
+    end)
+
+    describe('with ANSICON', function()
+      it('should add ANSI escapes to text', function()
+        package.config = "\\"
+        os.getenv = function () return true end
+        local colors = dofile 'ansicolors.lua'
+        assert_equal(colors('%{red}foo'), c27 .. '[0m' .. c27 .. '[31mfoo' .. c27 .. '[0m')
+      end)
+    end)
   end)
 
 end)
