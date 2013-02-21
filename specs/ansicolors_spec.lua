@@ -24,6 +24,29 @@ describe('ansicolors', function()
     assert_equal(ansicolors('%{bright white}*%{bright red}BEEP%{bright white}*'),  c27 .. '[0m' .. c27 .. '[1m' .. c27 .. '[37m*' .. c27 .. '[1m' .. c27 .. '[31mBEEP' .. c27 .. '[1m' .. c27 .. '[37m*' .. c27 .. '[0m')
   end)
 
+  describe('noReset', function ()
+    it('should do nothing if no options given', function()
+      assert_equal(ansicolors.noReset('foo'), 'foo' )
+    end)
+
+    it('should throw an error on invalid options', function()
+      assert_error(function() ansicolors.noReset('%{blah}foo') end)
+    end)
+
+    it('should add red color to text', function()
+      assert_equal(ansicolors.noReset('%{red}foo'), c27 .. '[31mfoo')
+    end)
+
+    it('should add red underlined text', function()
+      assert_equal(ansicolors.noReset('%{red underline}foo'), c27 .. '[31m' .. c27 .. '[4mfoo')
+    end)
+
+    it('should with heterogeneous attributes', function()
+      assert_equal(ansicolors.noReset('%{bright white}*%{bright red}BEEP%{bright white}*'),  c27 .. '[1m' .. c27 .. '[37m*' .. c27 .. '[1m' .. c27 .. '[31mBEEP' .. c27 .. '[1m' .. c27 .. '[37m*')
+    end)
+
+  end)
+
   describe('support detection', function()
 
     it('should return a plain text string on systems with no package.config', function()

@@ -22,6 +22,8 @@ h2. Usage
   print(colors('%{bright red underlined}hello'))
 </pre>
 
+The @colors@ function makes sure that color attributes are reset at each end of the generated string. If you want to generate complex strings piece-by-piece, use @colors.replaceCodes@, which works exactly the same, but without adding the reset codes at each end of the string.
+
 h2. Testing
 
 This application uses telescope in order to perform the tests. Install telescope, and then execute
