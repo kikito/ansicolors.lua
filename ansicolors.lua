@@ -100,11 +100,12 @@ end
 return setmetatable({noReset = replaceCodes}, {
   __call = function (_, str) return ansicolors (str) end,
   __index = function (self, name)
-    return function(input)
-      local fn = ansicolors("%{"..name.."}"..input)
-      self[name] = fn
-      return fn
+    local prefix = "%{"..name.."}"
+    local fn = function(input)
+      return ansicolors(prefix..input)
     end
+    self[name] = fn
+    return fn
   end
 })
 
