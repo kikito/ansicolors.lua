@@ -44,6 +44,22 @@ describe('ansicolors', function()
     it('should with heterogeneous attributes', function()
       assert_equal(ansicolors.noReset('%{bright white}*%{bright red}BEEP%{bright white}*'),  c27 .. '[1m' .. c27 .. '[37m*' .. c27 .. '[1m' .. c27 .. '[31mBEEP' .. c27 .. '[1m' .. c27 .. '[37m*')
     end)
+        
+    describe('<color> shorthands', function()
+      it('should work just like the string interpolation syntax', function()
+        assert_equal(
+          ansicolors('%{red blink}test'),
+          ansicolors.red_blink('test')
+        )
+      end)
+
+      it('should be memoized', function()
+        assert_equal(
+          ansicolors.red,
+          ansicolors.red
+        )
+      end)
+    end)
 
   end)
 
