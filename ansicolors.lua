@@ -99,9 +99,11 @@ end
 
 return setmetatable({noReset = replaceCodes}, {
   __call = function (_, str) return ansicolors (str) end,
-  __index = function (_, name)
+  __index = function (self, name)
     return function(input)
-      return ansicolors("%{"..name.."}"..input)
+      local fn = ansicolors("%{"..name.."}"..input)
+      self[name] = fn
+      return fn
     end
   end
 })
