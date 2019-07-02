@@ -97,4 +97,16 @@ local function ansicolors( str )
 end
 
 
-return setmetatable({noReset = replaceCodes}, {__call = function (_, str) return ansicolors (str) end})
+return setmetatable({noReset = replaceCodes}, {
+  __call = function (_, str) return ansicolors (str) end,
+  __index = function (self, name)
+    local prefix = "%{"..name.."}"
+    local fn = function(input)
+      return ansicolors(prefix..input)
+    end
+    self[name] = fn
+    return fn
+  end
+})
+
+
